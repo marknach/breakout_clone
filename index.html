@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+  <meta charset="UTF-8">
+  <title></title>
+  <style type="text/css">
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+  <script src="js/game.js"></script>
 </head>
-<body>
-    <canvas width="300" height="225"></canvas>
-
+<body onload="drawBoard();">
+<canvas id="game" width="600" height="400"></canvas>
 </body>
 </html>
