@@ -5,7 +5,6 @@ function drawBoard() {
     drawBlocks(canvas, ctx);
     drawPaddle(canvas, ctx);
   }
-
 }
 function drawBlocks(canvas, ctx) {
   var blockWidth = (canvas.width / 10.0);
@@ -27,3 +26,16 @@ function drawPaddle(canvas, ctx) {
   var y = (canvas.height - rowHeight);
   ctx.fillRect(x, y, blockWidth - 2, rowHeight - 2);
 }
+
+function movePaddle(n) {
+  console.log(n);
+}
+
+window.onkeyup = function(e) {
+  if (e.keyIdentifier == "Left") {
+    movePaddle(-1);
+  }
+  else if (e.keyIdentifier == "Right") {
+    movePaddle(1);
+  }
+};
