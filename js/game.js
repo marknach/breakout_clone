@@ -1,18 +1,17 @@
 function onLoad() {
-  window.onkeyup = function(e) {
+  var leftKeyPress = false;
+  var rightKeyPress = false;
+  document.onkeydown = function(e) {
     if (e.keyIdentifier == "Left") {
-      paddle['x'] -= 3;
-      canvas.width = canvas.width;
-      draw();
+      leftKeyPress = true;
     }
     else if (e.keyIdentifier == "Right") {
-      paddle['x'] += 3;
-      canvas.width = canvas.width;
-      draw();
+      rightKeyPress = true;
     }
   };
 
   var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
   var FPS = 60;
   var BLOCK_WIDTH = canvas.width / 10;
   var BLOCK_HEIGHT = 10;
@@ -20,7 +19,9 @@ function onLoad() {
   var NUM_ROWS = canvas.width / BLOCK_WIDTH;
   var ball = {
     x: (canvas.width - BALL_RADIUS) / 2,
-    y: (canvas.height - BALL_RADIUS) / 2
+    y: (canvas.height - BALL_RADIUS) / 2,
+    dx: 0,
+    dy: 3
   };
   var paddle = {
     x: (canvas.width - BLOCK_WIDTH) / 2,
@@ -38,14 +39,12 @@ function onLoad() {
   }
 
   function draw() {
-    if (canvas.getContext) {
-      var ctx = canvas.getContext('2d');
-      drawBlocks(canvas, ctx);
-      drawPaddle(canvas, ctx);
-//      drawBall();
-    }
+    canvas.width = canvas.width;
+    drawBlocks(canvas, ctx);
+    drawPaddle(canvas, ctx);
+    drawBall();
   }
-  function drawBlocks(canvas, ctx) {
+  function drawBlocks() {
     for (var y = 0; y < 5; y++) {
       for (var x = 0; x < NUM_ROWS; x++) {
         ctx.fillRect(blocks[y][x]['x'], blocks[y][x]['y'], BLOCK_WIDTH - 2, BLOCK_HEIGHT);
@@ -53,14 +52,38 @@ function onLoad() {
     }
   }
 
-  function drawPaddle(canvas, ctx) {
+  function drawPaddle() {
     ctx.fillStyle = "black";
     ctx.fillRect(paddle['x'], paddle['y'], BLOCK_WIDTH - 2, BLOCK_HEIGHT - 2);
   }
 
-  init();
-  draw();
+  function drawBall() {
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ball.x += (ball.dx);
+    ball.y += (ball.dy);
+    ctx.arc(ball.x, ball.y, BALL_RADIUS, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
 
+  function movePaddle() {
+    if (leftKeyPress ) {
+      paddle['x'] -= 20;
+      leftKeyPress = false;
+    }
+    if (rightKeyPress) {
+      paddle['x'] += 20;
+      rightKeyPress = false;
+    }
+  }
+
+  function gameloop() {
+    movePaddle();
+    draw();
+  }
+
+  init();
+  window.setInterval(gameloop, 1000 / FPS);
 }
 
 
