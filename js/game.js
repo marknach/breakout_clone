@@ -46,6 +46,7 @@ function onLoad() {
     drawPaddle(canvas, ctx);
     drawBall();
   }
+
   function drawBlocks() {
     for (var y = 0; y < NUM_ROWS; y++) {
       for (var x = 0; x < NUM_COLUMNS; x++) {
@@ -117,10 +118,7 @@ function onLoad() {
       console.log("way 2 go chief");
       window.clearInterval(game);
     }
-
-
   }
-
 
   function gameloop() {
     movePaddle();
