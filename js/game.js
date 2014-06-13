@@ -18,11 +18,12 @@ function onLoad() {
   var BALL_RADIUS = 5;
   var NUM_ROWS = 5;
   var NUM_COLUMNS = canvas.width / BLOCK_WIDTH;
+  var BLOCK_COUNT = NUM_ROWS * NUM_COLUMNS;
   var ball = {
     x: (canvas.width - BALL_RADIUS) / 2,
     y: (canvas.height - BALL_RADIUS) / 2,
     dx: 1,
-    dy: 2
+    dy: 3
   };
   var paddle = {
     x: (canvas.width - BLOCK_WIDTH) / 2,
@@ -94,26 +95,42 @@ function onLoad() {
     }
     for (var y = 0; y < NUM_ROWS; y++) {
       for (var x = 0; x < NUM_COLUMNS; x++) {
-        if ( ball['x']  > blocks[y][x]['x'] && ball['x'] < blocks[y][x]['x'] + BLOCK_WIDTH
+        if ( !blocks[y][x]['hit']
+          && ball['x']  > blocks[y][x]['x'] && ball['x'] < blocks[y][x]['x'] + BLOCK_WIDTH
           && ball['y']  > blocks[y][x]['y'] && ball['y'] < blocks[y][x]['y'] + BLOCK_HEIGHT) {
           blocks[y][x]['hit'] = true;
+          BLOCK_COUNT--;
+          console.log(BLOCK_COUNT + " blocks left");
+          ball['dy'] *= -1;
+          break;
         }
       }
     }
+  }
 
-
+  function gameOver() {
+    if (ball['y'] > canvas.height - BLOCK_HEIGHT ) {
+      console.log("GG NUB");
+      window.clearInterval(game);
+    }
+    if (BLOCK_COUNT == 0){
+      console.log("way 2 go chief");
+      window.clearInterval(game);
+    }
 
 
   }
+
 
   function gameloop() {
     movePaddle();
     draw();
     collisions();
+    gameOver();
   }
 
   init();
-  window.setInterval(gameloop, 1000 / FPS);
+  var game = window.setInterval(gameloop, 1000 / FPS);
 }
 
 
