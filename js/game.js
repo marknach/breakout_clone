@@ -2,9 +2,14 @@ function onLoad() {
   window.onkeyup = function(e) {
     if (e.keyIdentifier == "Left") {
       paddle['x'] -= 3;
+      canvas.width = canvas.width;
+      draw();
     }
     else if (e.keyIdentifier == "Right") {
-      paddle['x'] += 3;    }
+      paddle['x'] += 3;
+      canvas.width = canvas.width;
+      draw();
+    }
   };
 
   var canvas = document.getElementById('game');
