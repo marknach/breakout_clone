@@ -16,7 +16,8 @@ function onLoad() {
   var BLOCK_WIDTH = canvas.width / 10;
   var BLOCK_HEIGHT = 10;
   var BALL_RADIUS = 5;
-  var NUM_ROWS = canvas.width / BLOCK_WIDTH;
+  var NUM_ROWS = 5;
+  var NUM_COLUMNS = canvas.width / BLOCK_WIDTH;
   var ball = {
     x: (canvas.width - BALL_RADIUS) / 2,
     y: (canvas.height - BALL_RADIUS) / 2,
@@ -30,10 +31,10 @@ function onLoad() {
   var blocks = new Array(5);
 
   function init() {
-    for (var y = 0; y < 5; y ++) {
-      blocks[y] = new Array(NUM_ROWS);
-      for (var x = 0; x < NUM_ROWS; x++) {
-        blocks[y][x] = { x: x * BLOCK_WIDTH + 1, y: y * (BLOCK_HEIGHT + 2)};
+    for (var y = 0; y < NUM_ROWS; y ++) {
+      blocks[y] = new Array(NUM_COLUMNS);
+      for (var x = 0; x < NUM_COLUMNS; x++) {
+        blocks[y][x] = { x: x * BLOCK_WIDTH + 1, y: y * (BLOCK_HEIGHT + 2), hit: false};
       }
     }
   }
@@ -45,9 +46,11 @@ function onLoad() {
     drawBall();
   }
   function drawBlocks() {
-    for (var y = 0; y < 5; y++) {
-      for (var x = 0; x < NUM_ROWS; x++) {
-        ctx.fillRect(blocks[y][x]['x'], blocks[y][x]['y'], BLOCK_WIDTH - 2, BLOCK_HEIGHT);
+    for (var y = 0; y < NUM_ROWS; y++) {
+      for (var x = 0; x < NUM_COLUMNS; x++) {
+        if ( !blocks[y][x]['hit']) {
+          ctx.fillRect(blocks[y][x]['x'], blocks[y][x]['y'], BLOCK_WIDTH - 2, BLOCK_HEIGHT);
+        }
       }
     }
   }
@@ -81,17 +84,26 @@ function onLoad() {
 
   function collisions() {
     // ball w/ wall
-    if ( ball['x'] < BALL_RADIUS || ball['x'] > canvas.width - BALL_RADIUS ) {
-      ball['dx'] *= -1;
-    }
-
-    if ( ball['y'] < BALL_RADIUS ) { ball['dy'] *= -1;}
+    if ( ball['x'] < BALL_RADIUS || ball['x'] > canvas.width - BALL_RADIUS ) { ball['dx'] *= -1; }
+    if ( ball['y'] < BALL_RADIUS )                                           { ball['dy'] *= -1;}
 
     // ball w/ paddle
     if ((ball['y'] > canvas.height - BALL_RADIUS - BLOCK_HEIGHT) &&
       (ball['x']  > paddle['x'] - BALL_RADIUS && ball['x'] < paddle['x'] + BLOCK_WIDTH + BALL_RADIUS) ) {
       ball['dy'] *= -1;
     }
+    for (var y = 0; y < NUM_ROWS; y++) {
+      for (var x = 0; x < NUM_COLUMNS; x++) {
+        if ( ball['x']  > blocks[y][x]['x'] && ball['x'] < blocks[y][x]['x'] + BLOCK_WIDTH
+          && ball['y']  > blocks[y][x]['y'] && ball['y'] < blocks[y][x]['y'] + BLOCK_HEIGHT) {
+          blocks[y][x]['hit'] = true;
+        }
+      }
+    }
+
+
+
+
   }
 
   function gameloop() {
