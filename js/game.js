@@ -20,8 +20,8 @@ function onLoad() {
   var ball = {
     x: (canvas.width - BALL_RADIUS) / 2,
     y: (canvas.height - BALL_RADIUS) / 2,
-    dx: 0,
-    dy: 3
+    dx: 1,
+    dy: 2
   };
   var paddle = {
     x: (canvas.width - BLOCK_WIDTH) / 2,
@@ -67,19 +67,37 @@ function onLoad() {
   }
 
   function movePaddle() {
-    if (leftKeyPress ) {
+    if (leftKeyPress && (paddle['x'] > 0)) {
       paddle['x'] -= 20;
-      leftKeyPress = false;
+
     }
-    if (rightKeyPress) {
+    if (rightKeyPress && (paddle['x'] < canvas.width - BLOCK_WIDTH)) {
       paddle['x'] += 20;
-      rightKeyPress = false;
+
+    }
+    leftKeyPress = false;
+    rightKeyPress = false;
+  }
+
+  function collisions() {
+    // ball w/ wall
+    if ( ball['x'] < BALL_RADIUS || ball['x'] > canvas.width - BALL_RADIUS ) {
+      ball['dx'] *= -1;
+    }
+
+    if ( ball['y'] < BALL_RADIUS ) { ball['dy'] *= -1;}
+
+    // ball w/ paddle
+    if ((ball['y'] > canvas.height - BALL_RADIUS - BLOCK_HEIGHT) &&
+      (ball['x']  > paddle['x'] - BALL_RADIUS && ball['x'] < paddle['x'] + BLOCK_WIDTH + BALL_RADIUS) ) {
+      ball['dy'] *= -1;
     }
   }
 
   function gameloop() {
     movePaddle();
     draw();
+    collisions();
   }
 
   init();
