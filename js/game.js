@@ -93,6 +93,7 @@ function onLoad() {
     if ((ball['y'] > canvas.height - BALL_RADIUS - BLOCK_HEIGHT) &&
       (ball['x']  > paddle['x'] - BALL_RADIUS && ball['x'] < paddle['x'] + BLOCK_WIDTH + BALL_RADIUS) ) {
       ball['dy'] *= -1;
+      ball['dx'] -= (paddle['x'] + (BLOCK_WIDTH / 2) - ball['x']) / (BLOCK_WIDTH / 2);
     }
     for (var y = 0; y < NUM_ROWS; y++) {
       for (var x = 0; x < NUM_COLUMNS; x++) {
@@ -130,8 +131,3 @@ function onLoad() {
   init();
   var game = window.setInterval(gameloop, 1000 / FPS);
 }
-
-
-
-
-
