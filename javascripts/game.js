@@ -19,19 +19,23 @@ function onLoad() {
   var NUM_ROWS = 5;
   var NUM_COLUMNS = canvas.width / BLOCK_WIDTH;
   var BLOCK_COUNT = NUM_ROWS * NUM_COLUMNS;
-  var ball = {
-    x: (canvas.width - BALL_RADIUS) / 2,
-    y: (canvas.height - BALL_RADIUS) / 2,
-    dx: 1,
-    dy: 3
-  };
-  var paddle = {
-    x: (canvas.width - BLOCK_WIDTH) / 2,
-    y: (canvas.height - BLOCK_HEIGHT)
-  };
   var blocks = new Array(5);
+  var ball = {};
+  var paddle = {};
 
   function init() {
+    document.getElementById('start').style.display = 'none';
+    ball = {
+      x: (canvas.width - BALL_RADIUS) / 2,
+      y: (canvas.height - BALL_RADIUS) / 2,
+      dx: 1,
+      dy: 3
+    };
+    paddle = {
+      x: (canvas.width - BLOCK_WIDTH) / 2,
+      y: (canvas.height - BLOCK_HEIGHT)
+    };
+
     for (var y = 0; y < NUM_ROWS; y ++) {
       blocks[y] = new Array(NUM_COLUMNS);
       for (var x = 0; x < NUM_COLUMNS; x++) {
@@ -93,6 +97,7 @@ function onLoad() {
     if ((ball['y'] > canvas.height - BALL_RADIUS - BLOCK_HEIGHT) &&
       (ball['x']  > paddle['x'] - BALL_RADIUS && ball['x'] < paddle['x'] + BLOCK_WIDTH + BALL_RADIUS) ) {
       ball['dy'] *= -1;
+      ball['dx'] -= (paddle['x'] + (BLOCK_WIDTH / 2) - ball['x']) / (BLOCK_WIDTH / 2);
     }
     for (var y = 0; y < NUM_ROWS; y++) {
       for (var x = 0; x < NUM_COLUMNS; x++) {
@@ -113,10 +118,13 @@ function onLoad() {
     if (ball['y'] > canvas.height - BLOCK_HEIGHT ) {
       console.log("GG NUB");
       window.clearInterval(game);
+      document.getElementById('start').style.display = 'block';
     }
     if (BLOCK_COUNT == 0){
       console.log("way 2 go chief");
       window.clearInterval(game);
+      document.getElementById('start').style.display = 'block';
+
     }
   }
 
@@ -130,8 +138,3 @@ function onLoad() {
   init();
   var game = window.setInterval(gameloop, 1000 / FPS);
 }
-
-
-
-
-
