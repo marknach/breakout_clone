@@ -27,7 +27,7 @@ function onLoad() {
     document.getElementById('start').style.display = 'none';
     ball = {
       x: (canvas.width - BALL_RADIUS) / 2,
-      y: (canvas.height - BALL_RADIUS) / 2,
+      y: (canvas.height - BALL_RADIUS) / 4,
       dx: 1,
       dy: 3
     };
