@@ -97,17 +97,42 @@ function onLoad() {
     }
     for (var y = 0; y < NUM_ROWS; y++) {
       for (var x = 0; x < NUM_COLUMNS; x++) {
-        if ( !blocks[y][x]['hit']
-          && ball['x']  > blocks[y][x]['x'] && ball['x'] < blocks[y][x]['x'] + BLOCK_WIDTH
-          && ball['y']  > blocks[y][x]['y'] && ball['y'] < blocks[y][x]['y'] + BLOCK_HEIGHT) {
-          blocks[y][x]['hit'] = true;
-          BLOCK_COUNT--;
-          console.log(BLOCK_COUNT + " blocks left");
-          ball['dy'] *= -1;
-          break;
+        if ( !blocks[y][x]['hit'] ) {
+          if ( collideFromTop(blocks[y][x]) || collideFromBottom(blocks[y][x]) ) {
+            blocks[y][x]['hit'] = true;
+            BLOCK_COUNT--;
+            console.log(BLOCK_COUNT + " blocks left");
+            ball['dy'] *= -1;
+            break;
+          }
+          if ( collideFromLeft(blocks[y][x]) || collideFromRight(blocks[y][x]) ) {
+            blocks[y][x]['hit'] = true;
+            BLOCK_COUNT--;
+            console.log(BLOCK_COUNT + " blocks left");
+            ball['dx'] *= -1;
+            break;
+          }
         }
       }
     }
+  }
+
+  function collideFromLeft(block) {
+
+  }
+
+  function collideFromRight(block) {
+
+  }
+
+  function collideFromTop(block) {
+    return ball['x']  > block['x'] && ball['x'] < block['x'] + BLOCK_WIDTH
+      && (ball['y'] + BALL_RADIUS) - block['y'] < ball['dy'];
+  }
+
+  function collideFromBottom(block) {
+    return ball['x']  > block['x'] && ball['x'] < block['x'] + BLOCK_WIDTH
+      && (ball['y'] - BALL_RADIUS) -  (block['y'] + BLOCK_HEIGHT) < ball['dy'];
   }
 
   function gameOver() {
