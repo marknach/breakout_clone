@@ -118,11 +118,13 @@ function onLoad() {
   }
 
   function collideFromLeft(block) {
-
+    return ball['y']  > block['y'] && ball['y'] < block['y'] + BLOCK_HEIGHT
+      && Math.abs((ball['x'] + BALL_RADIUS) - block['x']) < ball['dx'];
   }
 
   function collideFromRight(block) {
-
+    return ball['y']  > block['y'] && ball['y'] < block['y'] + BLOCK_HEIGHT
+      && Math.abs((ball['x'] + BALL_RADIUS) - (block['x'] + BLOCK_WIDTH)) < ball['dx'];
   }
 
   function collideFromTop(block) {
