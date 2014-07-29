@@ -19,6 +19,8 @@ function onLoad() {
   var NUM_ROWS = 5;
   var NUM_COLUMNS = canvas.width / BLOCK_WIDTH;
   var BLOCK_COUNT = NUM_ROWS * NUM_COLUMNS;
+  var COLORS = ["#0E3D59", "#88A61B", "#F29F05", "#F25C05", "#D92525"];
+  var ballColor = "black";
   var ball = {
     x: (canvas.width - BALL_RADIUS) / 2,
     y: (canvas.height - BALL_RADIUS) / 2,
@@ -51,6 +53,7 @@ function onLoad() {
     for (var y = 0; y < NUM_ROWS; y++) {
       for (var x = 0; x < NUM_COLUMNS; x++) {
         if ( !blocks[y][x]['hit']) {
+          ctx.fillStyle = COLORS[y];
           ctx.fillRect(blocks[y][x]['x'], blocks[y][x]['y'], BLOCK_WIDTH - 2, BLOCK_HEIGHT);
         }
       }
@@ -64,6 +67,7 @@ function onLoad() {
 
   function drawBall() {
     ctx.strokeStyle = "black";
+    ctx.fillStyle = ballColor;
     ctx.beginPath();
     ball.x += (ball.dx);
     ball.y += (ball.dy);
@@ -103,6 +107,7 @@ function onLoad() {
             BLOCK_COUNT--;
             console.log(BLOCK_COUNT + " blocks left");
             ball['dy'] *= -1;
+            ballColor = COLORS[y];
             break;
           }
           if ( collideFromLeft(blocks[y][x]) || collideFromRight(blocks[y][x]) ) {
