@@ -73,17 +73,13 @@ Menu.prototype = {
   },
   create: function() {
     var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
-    this.sprite.anchor.setTo(0.5, 0.5);
 
-    this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
+    this.titleText = this.game.add.text(this.game.world.centerX, 300, 'Breakout!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
+    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play!', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionsText.anchor.setTo(0.5, 0.5);
 
-    this.sprite.angle = -20;
-    this.game.add.tween(this.sprite).to({angle: 20}, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
@@ -101,14 +97,16 @@ module.exports = Menu;
   Play.prototype = {
     create: function() {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.sprite = this.game.add.sprite(this.game.width/2, this.game.height/2, 'yeoman');
+      this.sprite = this.game.add.sprite(this.game.width/2, this.game.height/2, 'ball');
       this.sprite.inputEnabled = true;
       
       this.game.physics.arcade.enable(this.sprite);
       this.sprite.body.collideWorldBounds = true;
+      this.game.physics.arcade.checkCollision.down = false;
+
       this.sprite.body.bounce.setTo(1,1);
-      this.sprite.body.velocity.x = this.game.rnd.integerInRange(-500,500);
-      this.sprite.body.velocity.y = this.game.rnd.integerInRange(-500,500);
+      this.sprite.body.velocity.x = 0;
+      this.sprite.body.velocity.y = 0;
 
       this.sprite.events.onInputDown.add(this.clickListener, this);
     },
@@ -121,6 +119,7 @@ module.exports = Menu;
   };
   
   module.exports = Play;
+
 },{}],6:[function(require,module,exports){
 
 'use strict';
@@ -136,7 +135,8 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('yeoman', 'assets/yeoman-logo.png');
+    this.load.image('ball', 'assets/ball10x10.png');
+    this.load.image('block', 'assets/block.png');
 
   },
   create: function() {
