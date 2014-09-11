@@ -3,25 +3,20 @@
   function Play() {}
   Play.prototype = {
     create: function() {
+      this.game.stage.backgroundColor = '#FFF'
+
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.sprite = this.game.add.sprite(this.game.width/2, this.game.height/2, 'ball');
-      this.sprite.inputEnabled = true;
-      
-      this.game.physics.arcade.enable(this.sprite);
-      this.sprite.body.collideWorldBounds = true;
       this.game.physics.arcade.checkCollision.down = false;
 
-      this.sprite.body.bounce.setTo(1,1);
-      this.sprite.body.velocity.x = 0;
-      this.sprite.body.velocity.y = 0;
+      this.blocks = this.game.add.group();
+      this.blocks.enableBody = true;
+      this.blocks.physicsBodyType = Phaser.Physics.ARCADE;
 
-      this.sprite.events.onInputDown.add(this.clickListener, this);
+
+      this.ball = this.game.add.sprite(this.game.width/2, this.game.height/2, 'ball');
     },
     update: function() {
 
-    },
-    clickListener: function() {
-      this.game.state.start('gameover');
     }
   };
   
