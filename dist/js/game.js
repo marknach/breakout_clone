@@ -106,7 +106,23 @@ module.exports = Menu;
       this.blocks.physicsBodyType = Phaser.Physics.ARCADE;
 
 
-      this.ball = this.game.add.sprite(this.game.width/2, this.game.height/2, 'ball');
+      this.ball = this.game.add.sprite(10, 10, 'ball');
+      this.game.physics.enable(this.ball, Phaser.Physics.ARCADE);
+      this.ball.body.collideWorldBounds = true;
+      this.ball.body.bounce.set(1);
+      this.ball.body.velocity.x = 50;
+      this.ball.body.velocity.y = -80;
+
+      for (var y = 0; y < 4; y++){
+        for (var x = 0; x < 10; x++)
+        {
+            var brick = this.blocks.create(120 + (x * 54), 100 + (y * 52), 'block')
+            brick.body.bounce.set(1);
+            brick.body.immovable = true;
+        }
+      }
+
+
     },
     update: function() {
 
