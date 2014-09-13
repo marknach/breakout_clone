@@ -126,10 +126,11 @@ module.exports = Menu;
     },
     update: function() {
       //this.game.physics.arcade.collide(this.ball, this.paddle, ballHitPaddle, null, this);
-      this.game.physics.arcade.collide(this.ball, this.blocks, this.ballHitBlock, null, this);
+      this.game.physics.arcade.collide(this.ball, this.blocks, this.ballHitsBlock, null, this);
 
     },
     ballHitsBlock: function(_ball, _block) {
+      console.log("HIT");
       _block.kill();
     }
   };
